@@ -1,0 +1,18 @@
+{
+    "contents" : "insertRow2 <- function(existingDF, newrow, r) {\n  existingDF <- rbind(existingDF,newrow)\n  existingDF <- existingDF[order(c(1:(nrow(existingDF)-1),r-0.5)),]\n  row.names(existingDF) <- 1:nrow(existingDF)\n  return(existingDF)  \n}\n\nget.location_data<- function(data_set,location)\n{\n  \n  tem_dataset<-as.data.frame(matrix(ncol = ncol(data_set),nrow = 1))\n  names(tem_dataset)<-c(names(data_set))\n  pattern<-sprintf(\"*%s*\",location)\n  print(pattern)\n  for(i in 1:nrow(data_set))\n  {\n    print(data_set[i,\"Location\"])\n    print(i)\n    if(isTRUE(length(grep(pattern = pattern,data_set[i,\"Location\"],ignore.case = TRUE))!=0))\n    {\n      tem<-c(data_set[i,])\n      print(\"hai\")\n      tem_dataset<-insertRow2(tem_dataset,tem,nrow(tem_dataset)+1)\n    }\n  }\n  return(tem_dataset)\n}\n\nloc<-readline(\"Enter the location : \")\nmmm<-get.location_data(fb_data,loc)",
+    "created" : 1451989837288.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "2837897892",
+    "id" : "FB81DC95",
+    "lastKnownWriteTime" : 7011605692497750387,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled4"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

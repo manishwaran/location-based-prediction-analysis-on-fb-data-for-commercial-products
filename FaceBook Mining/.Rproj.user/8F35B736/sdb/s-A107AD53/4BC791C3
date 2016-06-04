@@ -1,0 +1,18 @@
+{
+    "contents" : "find <- function(y)\n{\n  return(\"hai\")\n}\n\neg <- function()\n{\n  x<-readline(\"Enter the data : \")\n  y<-find(x)\n  print(y)\n}\n\neg()",
+    "created" : 1452069234975.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "2900567389",
+    "id" : "4BC791C3",
+    "lastKnownWriteTime" : 7011605692497750387,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled12"
+    },
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

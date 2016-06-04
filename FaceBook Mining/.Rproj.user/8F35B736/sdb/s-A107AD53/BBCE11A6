@@ -1,0 +1,18 @@
+{
+    "contents" : "network_types <- c(\"Airtel\",\"Reliance\",\"Vodafone\",\"BSNL\",\"Idea\",\"Aircel\",\"Tata_Docomo\")\n\nget.count <- function(col_set,not)\n{\n  count<-0\n  for(i in 1:length(col_set))\n  {\n    if(isTRUE(not!=col_set[i]))\n    {\n      count<-count+1\n    }  \n  }\n  return(count)\n}\n\nget.plot_point <- function(data_set)\n{\n  data_point<-as.list.default(rep(0,length(network_types)))\n  names(data_point)<-network_types\n  for(i in 1:length(network_types))\n  {\n    data_point[network_types[i]] <- get.count(data_set[[network_types[i]]],\"NA\")\n  }\n  return(data_point)\n}",
+    "created" : 1452016286930.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1929188201",
+    "id" : "BBCE11A6",
+    "lastKnownWriteTime" : 1452024260,
+    "path" : "C:/Users/Manishwaran/Desktop/Main Project/R/count.R",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled5"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

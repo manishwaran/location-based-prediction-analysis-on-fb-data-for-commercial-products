@@ -1,0 +1,18 @@
+{
+    "contents" : "insertRow2 <- function(existingDF, newrow, r) {\n  existingDF <- rbind(existingDF,newrow)\n  existingDF <- existingDF[order(c(1:(nrow(existingDF)-1),r-0.5)),]\n  row.names(existingDF) <- 1:nrow(existingDF)\n  return(existingDF)  \n}\n\nreformdata <- function(data_set)\n{\n  new_set <- as.data.frame(matrix(ncol = 3,nrow = 1))\n  name_data<-c(\"Name\",\"Location\",\"Network\")\n  names(new_set)<-name_data\n  count<-0\n  for(i in 1:nrow(data_set))\n  {\n    name<-data_set[i,\"Names\"]\n    location<-data_set[i,\"Location\"]\n    for(j in network_types)\n    {\n      if(isTRUE(data_set[i,j]!=\"NA\"))\n      {\n        tem<-list(name,location,data_set[[i,j]])\n        new_set<-insertRow2(new_set,tem,nrow(new_set)+1)\n        count<-count+1\n      }\n    }\n  }\n  return(new_set)\n}\n\nnew_set<-reformdata(fb_data)\nnew_set",
+    "created" : 1452055784046.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "4068004573",
+    "id" : "3DC8B516",
+    "lastKnownWriteTime" : 7163382508214905954,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled9"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

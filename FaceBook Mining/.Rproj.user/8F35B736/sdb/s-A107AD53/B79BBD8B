@@ -1,0 +1,18 @@
+{
+    "contents" : "network_types <- c(\"Airtel\",\"Reliance\",\"Vodafone\",\"BSNL\",\"Idea\",\"Aircel\",\"Tata_Docomo\")\n\nget.count <- function(col_set,not)\n{\n  count<-0\n  for(i in 1:length(col_set))\n  {\n    if(isTRUE(not!=col_set[i]))\n    {\n      count<-count+1\n    }  \n  }\n  return(count)\n}\n\nget.plot_point <- function(data_set)\n{\n  data_point<-as.list.default(rep(0,length(network_types)))\n  names(data_point)<-network_types\n  for(i in 1:length(network_types))\n  {\n    data_point[network_types[i]] <- get.count(data_set[[i+4]],\"NA\")\n  }\n  return(data_point)\n}",
+    "created" : 1452029054634.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "4168711101",
+    "id" : "B79BBD8B",
+    "lastKnownWriteTime" : 7011605692497750387,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled7"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,18 @@
+{
+    "contents" : "network_types <- c(\"Airtel\",\"Reliance\",\"Vodafone\",\"BSNL\",\"Idea\",\"Aircel\",\"Tata_Docomo\")\n\nread.dataset <- function(url_string)\n{\n  dataset <- read.csv(file = url_string,header = FALSE,sep = \",\")\n  return(dataset)\n}\n\ninsertRow2 <- function(existingDF, newrow, r) {\n  existingDF <- rbind(existingDF,newrow)\n  existingDF <- existingDF[order(c(1:(nrow(existingDF)-1),r-0.5)),]\n  row.names(existingDF) <- 1:nrow(existingDF)\n  return(existingDF)  \n}\n\nget.location_data<- function(data_set,location)\n{\n  \n  tem_dataset<-as.data.frame(matrix(ncol = ncol(data_set),nrow = 1))\n  names(tem_dataset)<-c(names(data_set))\n  pattern<-sprintf(\"*%s*\",location)\n  print(pattern)\n  for(i in 1:nrow(data_set))\n  {\n    print(data_set[i,\"Location\"])\n    if(length(grep(pattern = pattern,data_set[i,\"Location\"],ignore.case = TRUE))>0)\n    {\n      tem<-c(data_set[i,])\n      print(\"hai\")\n      tem_dataset<-insertRow2(tem_dataset,tem,nrow(tem_dataset)+1)\n    }\n  }\n  return(tem_dataset)\n}\n\n#network_types <- c(\"Airtel\",\"Reliance\",\"Vodafone\",\"BSNL\",\"Idea\",\"Aircel\",\"Tata_Docomo\")\n\nget.count <- function(col_set,not)\n{\n  count<-0\n  for(i in 1:length(col_set))\n  {\n    if(isTRUE(not!=col_set[i]))\n    {\n      count<-count+1\n    }  \n  }\n  return(count)\n}\n\nget.plot_point <- function(data_set)\n{\n  data_point<-as.list.default(rep(0,length(network_types)))\n  names(data_point)<-network_types\n  for(i in 1:length(network_types))\n  {\n    data_point[network_types[i]] <- get.count(data_set[[i+4]],\"NA\")\n  }\n  return(data_point)\n}\n\n#loc<-readline(\"Enter the location : \")\nloc<-c(\"coimbatore\")\nfb_data<-read.dataset(\"dataset.csv\")\nsample_data<-get.location_data(fb_data,loc)\nsample_data\nplot_point <- get.plot_point(fb_data)\nplot_point",
+    "created" : 1452028286869.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "3814036969",
+    "id" : "EC65B899",
+    "lastKnownWriteTime" : 1452027841,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled6"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

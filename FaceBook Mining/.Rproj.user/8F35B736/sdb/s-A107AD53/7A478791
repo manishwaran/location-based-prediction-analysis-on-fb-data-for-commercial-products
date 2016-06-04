@@ -1,0 +1,18 @@
+{
+    "contents" : "get.location_data<- function(data_set,location)\n{\n  \n  tem_dataset<-as.data.frame(matrix(ncol = ncol(data_set),nrow = 1))\n  names(tem_dataset)<-c(names(data_set))\n  pattern<-sprintf(\"*%s*\",location)\n  print(pattern)\n  for(i in 1:nrow(data_set))\n  {\n    print(data_set[i,\"Location\"])\n    if(length(grep(pattern = pattern,data_set[i,\"Location\"],ignore.case = TRUE))>0)\n    {\n      tem<-c(data_set[i,])\n      print(\"hai\")\n      tem_dataset<-insertRow2(tem_dataset,tem,nrow(tem_dataset)+1)\n    }\n  }\n  return(tem_dataset)\n}\n\n\nget.count <- function(col_set,not)\n{\n  count<-0\n  for(i in 1:length(col_set))\n  {\n    if(isTRUE(not!=col_set[i]))\n    {\n      count<-count+1\n    }  \n  }\n  return(count)\n}\n\nget.plot_point <- function(data_set)\n{\n  data_point<-as.list.default(rep(0,length(network_types)))\n  names(data_point)<-network_types\n  for(i in 1:length(network_types))\n  {\n    data_point[network_types[i]] <- get.count(data_set[[network_types[i]]],\"NA\")\n  }\n  return(data_point)\n}\n\nloc<-readline(\"Enter the location : \")",
+    "created" : 1452025424288.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "1726289637",
+    "id" : "7A478791",
+    "lastKnownWriteTime" : 1452024260,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled5"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

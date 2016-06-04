@@ -1,0 +1,146 @@
+require(ggplot2)
+
+network_types <- c("Airtel","Reliance","Vodafone","BSNL","Idea","Aircel","Tata_Docomo")
+
+read.dataset <- function(url_string)
+{
+  dataset <- read.csv(file = url_string,header = TRUE,sep = ",")
+  return(dataset)
+}
+
+
+insertRow2 <- function(existingDF, newrow, r) 
+{
+  existingDF <- rbind(existingDF,newrow)
+  existingDF <- existingDF[order(c(1:(nrow(existingDF)-1),r-0.5)),]
+  row.names(existingDF) <- 1:nrow(existingDF)
+  return(existingDF)  
+}
+
+get.location_data<- function(data_set,location)
+{
+  
+  tem_dataset<-as.data.frame(matrix(ncol = ncol(data_set),nrow = 1))
+  names(tem_dataset)<-c(names(data_set))
+  pattern<-sprintf("*%s*",location)
+  for(i in 1:nrow(data_set))
+  {
+    if(isTRUE(length(grep(pattern = pattern,data_set[i,"Location"],ignore.case = TRUE))!=0))
+    {
+      tem<-c(data_set[i,])
+      tem_dataset<-insertRow2(tem_dataset,tem,nrow(tem_dataset)+1)
+    }
+  }
+  return(tem_dataset)
+}
+
+get.count <- function(col_set,not)
+{
+  count<-0
+  for(i in 1:length(col_set))
+  {
+    if(isTRUE(not!=col_set[i]))
+    {
+      count<-count+1
+    }  
+  }
+  return(count)
+}
+
+get.plot_point <- function(data_set)
+{
+  data_point<-as.list.default(rep(0,length(network_types)))
+  names(data_point)<-network_types
+  for(i in 1:length(network_types))
+  {
+    data_point[network_types[i]] <- get.count(data_set[[network_types[i]]],"NA")
+  }
+  return(data_point)
+}
+
+reform_data <- function(data_set)
+{
+  new_set <- as.data.frame(matrix(ncol = 3,nrow = 1))
+  name_data<-c("Name","Location","Network")
+  names(new_set)<-name_data
+  count<-0
+  for(i in 1:nrow(data_set))
+  {
+    name<-data_set[i,"Names"]
+    location<-data_set[i,"Location"]
+    for(j in network_types)
+    {
+      if(isTRUE(data_set[i,j]!="NA"))
+      {
+        tem<-list(name,location,data_set[[i,j]])
+        new_set<-insertRow2(new_set,tem,nrow(new_set)+1)
+        count<-count+1
+      }
+    }
+  }
+  return(new_set)
+}
+  url_string<-readline("Enter the data set path : ")
+  fb_data<-read.dataset(url_string = url_string)
+  location_data<-get.location_data(fb_data,loc)
+  new_dataset<-reform_data(location_data)
+  ggplot(new_dataset, aes(Location, fill=Network)) + geom_bar(position="dodge")
+  new_data<-reform_data(fb_data)
+  ggplot(new_data, aes(Location, fill=Network)) + geom_bar(position="dodge")
+  
+  
+  ####################################################################
+  
+  
+  get.count_data <- function(my_set_net,my_set_week,week)
+  {
+    count<-0
+    for(i in 1:nrow(my_set_net))
+    {
+      if(isTRUE(my_set_net[i,1]!="NA"))
+      {
+        if(isTRUE(my_set_week[i,1]==week)){
+          count<-count+1}
+      }
+    }
+    return(count)
+  }
+  reform_data_predict <- function(data_set,new_set,week,max_week)
+  {
+    for( i in 1:max_week)
+    {
+      tem<-as.data.frame(matrix(ncol = length(network_types)+1,nrow = 1))
+      name_data<-c("Week",network_types)
+      names(tem)<-name_data
+      tem['Week']<-i
+      for(j in network_types)
+      {
+        tem[j]<-get.count_data(data_set[j],data_set['Week'],i)
+      }
+      new_set<-insertRow2(new_set,tem,nrow(new_set)+1)
+    }
+    return(new_set)
+  }
+  
+  predict_arima<-function(data,ahead)
+  {
+    data<-ts(data)
+    (fit <- arima(log(data), c(0, 1, 1),seasonal = list(order = c(0, 1, 1), period = 12)))
+    pred <- predict(fit, n.ahead = ahead)
+    ts.plot(data,2.718^pred$pred, log = "y", lty = c(1,3))
+  }
+  
+  url_string<-readline("Enter the dataset : ")
+  fb_data<-read.dataset(url_string)
+  new_set <- as.data.frame(matrix(ncol = length(network_types)+1,nrow = 1))
+  name_data<-c("Week",network_types)
+  names(new_set)<-name_data
+  new_set<-reform_data_predict(fb_data,new_set,1,22)
+  new_set<-new_set[-1,]
+  new_set
+  new_set<-ts(new_set)
+  plot(new_set[,-1])
+  url<-readline("Enter the Network : ")
+  predict_arima(new_set[,url],4)
+  
+  
